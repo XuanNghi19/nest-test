@@ -1,0 +1,5 @@
+npm install @nestjs/typeorm typeorm pg
+npm install @nestjs/config
+npm install @nestjs/passport passport passport-local @nestjs/jwt passport-jwt
+npm install bcrypt
+npm install --save-dev @types/bcrypt
