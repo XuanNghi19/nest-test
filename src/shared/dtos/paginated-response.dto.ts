@@ -1,9 +1,23 @@
+import { ApiProperty } from '@nestjs/swagger';
+
+export class PaginatedMetaData {
+  @ApiProperty()
+  totalItems: number;
+
+  @ApiProperty()
+  currentPage: number;
+
+  @ApiProperty()
+  totalPages: number;
+
+  @ApiProperty()
+  itemsPerPage: number;
+}
+
 export class PaginatedResponse<T> {
+  @ApiProperty()
   data: T[];
-  meta: {
-    totalItems: number;
-    currentPage: number;
-    totalPages: number;
-    itemsPerPage: number;
-  };
+
+  @ApiProperty()
+  meta: PaginatedMetaData;
 }

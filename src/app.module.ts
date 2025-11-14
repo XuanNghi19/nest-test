@@ -20,7 +20,9 @@ import { AuthModule } from './auth/auth.module';
         type: 'postgres',
 
         url: configService.get<string>('DATABASE_URL'),
-        ssl: true,
+        ssl: {
+          rejectUnauthorized: false,
+        },
 
         //Tự động đăng ký entities
         autoLoadEntities: true,

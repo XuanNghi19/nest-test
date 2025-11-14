@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { PaginationQueryDto } from 'src/shared/dtos/pagination-query.dto';
 import { PaginatedResponse } from 'src/shared/dtos/paginated-response.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -17,6 +18,7 @@ export class UsersService {
   async create(createUserDto: CreateUserDto): Promise<User> {
     // create() tao 1 doi tuong entity, chua luu vao DB
     const newUser = this.usersRepository.create(createUserDto);
+    newUser.password = await this.hashPassword(newUser);
 
     // save() moi thuc su luu vao csdl
     return this.usersRepository.save(newUser);
@@ -66,5 +68,20 @@ export class UsersService {
         itemsPerPage: limit,
       },
     };
+  }
+
+  async hashPassword(user: User): Promise<string> {
+    if (user.password) {
+      const salt = await bcrypt.genSalt();
+      const password = await bcrypt.hash(user.password, salt);
+
+      return password;
+    }
+
+    throw new NotFoundException('Khong tim thay password cua user');
+  }
+
+  async validatePassword(user: User, password: string): Promise<boolean> {
+    return bcrypt.compare(password, user.password);
   }
 }

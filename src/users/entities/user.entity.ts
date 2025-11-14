@@ -1,17 +1,17 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import {
-  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import * as bcrypt from 'bcrypt';
 
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
+  @ApiProperty()
   id: string;
 
   @Column({
@@ -20,6 +20,7 @@ export class User {
     unique: true,
     nullable: false,
   })
+  @ApiProperty()
   email: string;
 
   @Column({
@@ -27,6 +28,7 @@ export class User {
     nullable: false,
     select: false, // khong bao h tra vef truong nay khi truy van
   })
+  @ApiProperty()
   @Exclude() // an truong nay khi dung class-transformer (vd: response)
   password: string;
 
@@ -35,29 +37,21 @@ export class User {
     length: 255,
     nullable: true,
   })
+  @ApiProperty()
   fullName: string;
 
   @Column({
     type: 'text',
     nullable: true,
   })
+  @ApiProperty()
   avatarUrl: string;
 
   @CreateDateColumn()
+  @ApiProperty()
   createAt: Date;
 
   @UpdateDateColumn()
+  @ApiProperty()
   updateAt: Date;
-
-  @BeforeInsert()
-  async hashPassword() {
-    if (this.password) {
-      const salt = await bcrypt.genSalt();
-      this.password = await bcrypt.hash(this.password, salt);
-    }
-  }
-
-  async validatePassword(password: string): Promise<boolean> {
-    return bcrypt.compare(password, this.password);
-  }
 }
