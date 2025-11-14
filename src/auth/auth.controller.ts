@@ -23,8 +23,7 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   @ApiCreatedResponse({ type: AuthResponse })
-  login(@Req() req: any, @Body() login: Login) {
-    console.log('asdasd');
+  async login(@Req() req: any, @Body() login: Login) {
     // @Req() la doi tuong Request day du cua Express
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     return this.authService.login(req.user);

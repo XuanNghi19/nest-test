@@ -46,13 +46,12 @@ export class AuthService {
     throw new UnauthorizedException('Thong tin dang nhap khong chinh xac');
   }
 
-  login(user: Omit<User, 'password'>): AuthResponse {
-    console.log(user);
+  async login(user: Omit<User, 'password'>): Promise<AuthResponse> {
     const payload = {
       email: user.email,
       sub: user.id, // cho jwt
     };
-
-    return new AuthResponse(this.jwtService.sign(payload), true);
+    const token = await this.jwtService.signAsync(payload);
+    return new AuthResponse(token, true);
   }
 }
