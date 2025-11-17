@@ -8,3 +8,7 @@ npm install -D @types/passport-local
 npm install @nestjs/passport passport passport-local @nestjs/jwt passport-jwt
 npm install bcrypt
 npm install --save-dev @types/bcrypt
+npm install --save-dev @types/multer
+npm install @supabase/supabase-js
+npm install express
+npm install --save-dev @types/express

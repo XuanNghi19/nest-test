@@ -6,6 +6,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { PaginationQueryDto } from 'src/shared/dtos/pagination-query.dto';
 import { PaginatedResponse } from 'src/shared/dtos/paginated-response.dto';
 import * as bcrypt from 'bcrypt';
+import { UploadFile } from 'src/shared/api/storage/entities/upload-file.entity';
 
 @Injectable()
 export class UsersService {
@@ -83,5 +84,12 @@ export class UsersService {
 
   async validatePassword(user: User, password: string): Promise<boolean> {
     return bcrypt.compare(password, user.password);
+  }
+
+  async updateAvatar(userId: string, avatarFile: UploadFile): Promise<User> {
+    await this.usersRepository.update(userId, { avatar: avatarFile });
+
+    const updatedUser = await this.findById(userId);
+    return updatedUser;
   }
 }

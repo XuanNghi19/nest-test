@@ -1,9 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
+import { UploadFile } from 'src/shared/api/storage/entities/upload-file.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -40,12 +43,10 @@ export class User {
   @ApiProperty()
   fullName: string;
 
-  @Column({
-    type: 'text',
-    nullable: true,
-  })
+  @OneToOne(() => File, { nullable: true, cascade: true, onDelete: 'CASCADE' })
+  @JoinColumn()
   @ApiProperty()
-  avatarUrl: string;
+  avatar: UploadFile;
 
   @CreateDateColumn()
   @ApiProperty()
